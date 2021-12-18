@@ -26,14 +26,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/encryptButton"
-            android:text="Encrypt"
+            android:text="@string/encrypt_btn"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:id="@+id/decryptButton"
-            android:text="Decrypt"
+            android:text="@string/decrypt_btn"
             />
+        <EditText
+            android:hint="password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordText"/>
+
+        <EditText
+            android:hint="clear text (to encrypt)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/clearText"  />
+
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
