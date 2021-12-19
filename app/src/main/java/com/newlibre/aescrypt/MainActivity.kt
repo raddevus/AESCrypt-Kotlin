@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import java.lang.Exception
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,10 +32,16 @@ class MainActivity : AppCompatActivity() {
         crypton = Crypton()
         decryptButton = findViewById(R.id.decryptButton)
         decryptButton.setOnClickListener {
-            val cipherBytes = Base64.getDecoder().decode(mainText.text.toString())
+            try {
+                val cipherBytes = Base64.getDecoder().decode(mainText.text.toString())
+                mainText.setText(crypton.decryptData(cipherBytes,passwordText.text.toString()))
+            }
+            catch (ex: Exception) {
+                Toast.makeText(applicationContext, "Could not decode (from Base64) the cipher bytes.",Toast.LENGTH_LONG).show()
+            }
             //Toast.makeText(applicationContext, mainText.text.toString(),Toast.LENGTH_LONG).show()
             //Toast.makeText(applicationContext, cipherBytes.size.toString(),Toast.LENGTH_LONG).show()
-            mainText.setText(crypton.decryptData(cipherBytes,passwordText.text.toString()))
+
         }
     }
 

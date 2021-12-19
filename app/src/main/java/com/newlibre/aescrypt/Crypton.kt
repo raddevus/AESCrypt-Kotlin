@@ -13,7 +13,9 @@ import javax.crypto.spec.SecretKeySpec
 class Crypton {
 
     constructor()
+
     fun decryptData(cipherText: ByteArray, password: String): String{
+        //if (cipherText.size <= 0)  return "No data to decrypt. Try again."
         val keygen = KeyGenerator.getInstance("AES")
         keygen.init(256)
         val key : SecretKey = keygen.generateKey()
@@ -24,7 +26,13 @@ class Crypton {
 
         val spec1 = SecretKeySpec(rawSha256OfPassword, "AES")
         val myIV : ByteArray = rawSha256OfPassword.slice(0..15).toByteArray()
-        val clearText: String = decrypt(cipherText, myIV,spec1)
+        val clearText: String
+        try {
+           clearText  = decrypt(cipherText, myIV, spec1)
+        }
+        catch (ex: Exception){
+            return "Decryption failed : ${ex.message}"
+        }
         return clearText
     }
 
@@ -55,11 +63,11 @@ class Crypton {
         return newCipherText.toBase64()
     }
 
-    fun ByteArray.toBase64(): String =
+    private fun ByteArray.toBase64(): String =
         String(Base64.getEncoder().encode(this))
 
     @Throws(Exception::class)
-    fun encrypt(
+    private fun encrypt(
         plaintext: ByteArray,
         IV: ByteArray,
         inSpec: SecretKeySpec
@@ -82,7 +90,7 @@ class Crypton {
         return cipher.doFinal(plaintext)
     }
 
-    fun decrypt(cipherText : ByteArray,
+    private fun decrypt(cipherText : ByteArray,
                 IV : ByteArray,
                 inSpec: SecretKeySpec
     ): String{
@@ -104,7 +112,7 @@ class Crypton {
         return String(decryptedText)
     }
 
-    fun ConvertStringToSha256(plainText : String) : ByteArray{
+    private fun ConvertStringToSha256(plainText : String) : ByteArray{
         val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
         val hash: ByteArray = digest.digest(plainText.toByteArray(StandardCharsets.UTF_8))
         return hash;
