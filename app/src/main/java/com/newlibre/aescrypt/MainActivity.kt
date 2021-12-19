@@ -26,18 +26,36 @@ class MainActivity : AppCompatActivity() {
         passwordText = findViewById(R.id.passwordText)
         clearText = findViewById(R.id.clearText)
         encryptButton.setOnClickListener {
-            mainText.setText(crypton.encryptData(clearText.text.toString().toByteArray(),
-                passwordText.text.toString()))
+            if (passwordText.text.toString().isEmpty()){
+                Toast.makeText(applicationContext, "Please add a password & try again.",Toast.LENGTH_LONG).show()
+            }
+            else {
+                crypton = Crypton(passwordText.text.toString())
+                mainText.setText(
+                    crypton.encryptData(
+                        clearText.text.toString().toByteArray()
+                    )
+                )
+            }
         }
-        crypton = Crypton()
+
         decryptButton = findViewById(R.id.decryptButton)
         decryptButton.setOnClickListener {
-            try {
-                val cipherBytes = Base64.getDecoder().decode(mainText.text.toString())
-                mainText.setText(crypton.decryptData(cipherBytes,passwordText.text.toString()))
+            if (passwordText.text.toString().isEmpty()){
+                Toast.makeText(applicationContext, "Please add a password & try again.",Toast.LENGTH_LONG).show()
             }
-            catch (ex: Exception) {
-                Toast.makeText(applicationContext, "Could not decode (from Base64) the cipher bytes.",Toast.LENGTH_LONG).show()
+            else {
+                crypton = Crypton(passwordText.text.toString())
+                try {
+                    val cipherBytes = Base64.getDecoder().decode(mainText.text.toString())
+                    mainText.setText(crypton.decryptData(cipherBytes))
+                } catch (ex: Exception) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Could not decode (from Base64) the cipher bytes.",
+                        Toast.LENGTH_LONG)
+                        .show()
+                }
             }
             //Toast.makeText(applicationContext, mainText.text.toString(),Toast.LENGTH_LONG).show()
             //Toast.makeText(applicationContext, cipherBytes.size.toString(),Toast.LENGTH_LONG).show()

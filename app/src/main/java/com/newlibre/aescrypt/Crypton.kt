@@ -10,7 +10,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-class Crypton {
+class Crypton(val password: String) {
 
     // ############
     // ############ Usage notes
@@ -35,10 +35,8 @@ class Crypton {
     //    saved as Base64 encoded data (a string in a file somewhere).
     //    If your data is encoded then decode it properly first and only send the raw bytes
     //    into the DecryptData() function with the correct password & everything will work fine.
-    
-    constructor()
 
-    fun decryptData(cipherText: ByteArray, password: String): String{
+    fun decryptData(cipherText: ByteArray): String{
         //if (cipherText.size <= 0)  return "No data to decrypt. Try again."
         val keygen = KeyGenerator.getInstance("AES")
         keygen.init(256)
@@ -60,7 +58,7 @@ class Crypton {
         return clearText
     }
 
-    fun encryptData(plainText : ByteArray, password: String) : String{
+    fun encryptData(plainText : ByteArray) : String{
 
         val keygen = KeyGenerator.getInstance("AES")
         keygen.init(256)
