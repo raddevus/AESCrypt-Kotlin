@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Please add a password & try again.",Toast.LENGTH_LONG).show()
             }
             else {
-                crypton = Crypton(passwordText.text.toString())
+                crypton = Crypton(passwordText.text.toString(),
+                    clearText.text.toString().toByteArray())
                 mainText.setText(
-                    crypton.encryptData(
-                        clearText.text.toString().toByteArray()
-                    )
+                    // call with true or blank -- true is default value
+                    crypton.processData()
                 )
             }
         }
@@ -45,10 +45,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Please add a password & try again.",Toast.LENGTH_LONG).show()
             }
             else {
-                crypton = Crypton(passwordText.text.toString())
                 try {
                     val cipherBytes = Base64.getDecoder().decode(mainText.text.toString())
-                    mainText.setText(crypton.decryptData(cipherBytes))
+                    crypton = Crypton(passwordText.text.toString(),
+                            cipherBytes)
+                    mainText.setText(crypton.processData(false))
                 } catch (ex: Exception) {
                     Toast.makeText(
                         applicationContext,
