@@ -12,6 +12,30 @@ import javax.crypto.spec.SecretKeySpec
 
 class Crypton {
 
+    // ############
+    // ############ Usage notes
+    // to use this class :
+    // 1. Create an instance
+    // 2. call EncryptData with ByteArray of the 1. _raw_ bytes you want to encrypt.
+    //     and 2. cleartext password you want to use to encrypt data
+    // 2a. The password is used to create a Sha256 hash -- the hash is 32 bytes and is
+    //     used as the encryption key for the AES algo
+    //     The first 16 bytes of that hash are used for the iv (init vector) of AES algo
+    // 3.  The raw data bytes will be encrypted and those encrypted bytes are
+    //     Base64 encoded (for ease of passing around & saving)
+
+    // ############
+    // Decrypting is just as simple
+    // 1. Create an instance
+    // 2. call DecryptData with ByteArray of _raw_ encrypted bytes and the original password
+    //    which was used to encrypt
+    // 2a. Again the password will be hashed (Sha256) and the 32 bytes are used as AES key
+    //     The first 16 bytes are used as the AES IV
+    // 3.  Most likely (if you're using this program to encrypt) you had your encrypted bytes
+    //    saved as Base64 encoded data (a string in a file somewhere).
+    //    If your data is encoded then decode it properly first and only send the raw bytes
+    //    into the DecryptData() function with the correct password & everything will work fine.
+    
     constructor()
 
     fun decryptData(cipherText: ByteArray, password: String): String{
