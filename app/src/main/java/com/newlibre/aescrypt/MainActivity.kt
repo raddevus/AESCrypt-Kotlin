@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var encryptButton : Button
     lateinit var decryptButton : Button
+    lateinit var hmacButton : Button
+    lateinit var hmacText : EditText
     lateinit var passwordText : EditText
     lateinit var clearText : EditText
     lateinit var ivText : EditText
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         passwordText = findViewById(R.id.passwordText)
         clearText = findViewById(R.id.clearText)
         ivText = findViewById(R.id.ivText)
+        hmacButton = findViewById(R.id.hmacButton)
+        hmacText = findViewById(R.id.hmacText)
+
         encryptButton.setOnClickListener {
             if (passwordText.text.toString().isEmpty()){
                 Toast.makeText(applicationContext, "Please add a password & try again.",Toast.LENGTH_LONG).show()
@@ -45,6 +50,11 @@ class MainActivity : AppCompatActivity() {
                 )
                 Log.d("Crypton", encryptedText)
             }
+        }
+
+        hmacButton.setOnClickListener {
+            var Hmac = Crypton.generateHmac(passwordText.text.toString(),hmacText.text.toString())
+            hmacText.setText(Hmac)
         }
 
         decryptButton = findViewById(R.id.decryptButton)
